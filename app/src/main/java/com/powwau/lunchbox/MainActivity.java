@@ -1,17 +1,31 @@
 package com.powwau.lunchbox;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity implements View.OnClickListener {
+
+    private LunchOptionsFragment mLunchOptionsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        attachOptionsFragment();
+    }
+
+    private void attachOptionsFragment() {
+        mLunchOptionsFragment = new LunchOptionsFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().
+                replace(R.id.options, mLunchOptionsFragment).
+                commit();
     }
 
 
@@ -35,5 +49,42 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (findViewById(R.id.lunchbox) != null) {
+            showSummaryInFragment();
+        } else {
+            showSummaryInActivity();
+        }
+    }
+
+    private void showSummaryInFragment() {
+        LunchSummaryFragment lunchSummaryFragment = new LunchSummaryFragment();
+        passArgumentsToLunchSummaryFragment(lunchSummaryFragment);
+        performLunchSummaryFragmentTransaction(lunchSummaryFragment);
+    }
+
+
+    private void passArgumentsToLunchSummaryFragment(LunchSummaryFragment lunchSummaryFragment) {
+        String summary = mLunchOptionsFragment.generateOptionSummary();
+        Bundle bundle = new Bundle();
+        bundle.putString(LunchSummaryFragment.SUMMARY_TEXT, summary);
+        lunchSummaryFragment.setArguments(bundle);
+    }
+
+    private void performLunchSummaryFragmentTransaction(LunchSummaryFragment lunchSummaryFragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().
+                replace(R.id.lunchbox, lunchSummaryFragment).
+                commit();
+    }
+
+    private void showSummaryInActivity() {
+        Intent intent = new Intent(this, LunchSummaryActivity.class);
+        String summary = mLunchOptionsFragment.generateOptionSummary();
+        intent.putExtra(Intent.EXTRA_TEXT, summary);
+        startActivity(intent);
     }
 }
