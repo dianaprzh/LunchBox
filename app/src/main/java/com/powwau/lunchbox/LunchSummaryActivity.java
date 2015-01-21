@@ -2,6 +2,7 @@ package com.powwau.lunchbox;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,9 +18,22 @@ public class LunchSummaryActivity extends Activity {
     }
 
     private void attachSummaryFragment() {
+        LunchSummaryFragment lunchSummaryFragment = new LunchSummaryFragment();
+        passArgumentsToLunchSummaryFragment(lunchSummaryFragment);
+        performLunchSummaryFragmentTransaction(lunchSummaryFragment);
+    }
+
+    private void passArgumentsToLunchSummaryFragment(LunchSummaryFragment lunchSummaryFragment) {
+        String summary = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        Bundle bundle = new Bundle();
+        bundle.putString(LunchSummaryFragment.SUMMARY_TEXT, summary);
+        lunchSummaryFragment.setArguments(bundle);
+    }
+
+    private void performLunchSummaryFragmentTransaction(LunchSummaryFragment lunchSummaryFragment) {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().
-                replace(R.id.lunchbox, new LunchSummaryFragment()).
+                replace(R.id.lunchbox, lunchSummaryFragment).
                 commit();
     }
 

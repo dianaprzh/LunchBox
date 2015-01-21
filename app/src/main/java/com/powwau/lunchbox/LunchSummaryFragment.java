@@ -1,7 +1,6 @@
 package com.powwau.lunchbox;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import android.widget.TextView;
  */
 public class LunchSummaryFragment extends Fragment {
 
+    public static final String SUMMARY_TEXT = "SUMMARY_TEXT";
 
     public LunchSummaryFragment() {
         // Required empty public constructor
@@ -31,9 +31,8 @@ public class LunchSummaryFragment extends Fragment {
     }
 
     private void displaySummary(View rootView) {
-        Intent intent = getActivity().getIntent();
-        String summary = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (summary != null) {
+        if (getArguments().containsKey(SUMMARY_TEXT)) {
+            String summary = getArguments().getString(SUMMARY_TEXT);
             TextView textView = (TextView) rootView.findViewById(R.id.text_view_summary);
             textView.setText(summary);
         }
