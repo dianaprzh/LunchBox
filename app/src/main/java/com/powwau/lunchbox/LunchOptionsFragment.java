@@ -1,7 +1,6 @@
 package com.powwau.lunchbox;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.TextUtils;
@@ -32,19 +31,12 @@ public class LunchOptionsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_lunch_options, container, false);
         Button packLunchButton = (Button)rootView.findViewById(R.id.button_pack_lunch);
-        packLunchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LunchSummaryActivity.class);
-                String summary = generateOptionSummary();
-                intent.putExtra(Intent.EXTRA_TEXT, summary);
-                startActivity(intent);
-            }
-        });
+        MainActivity mainActivity = (MainActivity)getActivity();
+        packLunchButton.setOnClickListener(mainActivity);
         return rootView;
     }
 
-    private String generateOptionSummary() {
+    public String generateOptionSummary() {
         List<String> options = new ArrayList<>(6);
         int[] ids = {
                 R.id.checkbox_kosher, R.id.checkbox_muslim, R.id.checkbox_hindu,
