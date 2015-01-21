@@ -12,5 +12,6 @@
     <string name="checkbox_diabetic">Diabetic</string>
     <string name="checkbox_gluten_free">Gluten-free</string>
     <string name="button_pack_lunch">Pack Lunch</string>
+    <string name="title_activity_lunch_summary">LunchSummaryActivity</string>
 
 </resources>
