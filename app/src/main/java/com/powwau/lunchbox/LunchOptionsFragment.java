@@ -31,8 +31,8 @@ public class LunchOptionsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_lunch_options, container, false);
         Button packLunchButton = (Button)rootView.findViewById(R.id.button_pack_lunch);
-        MainActivity mainActivity = (MainActivity)getActivity();
-        packLunchButton.setOnClickListener(mainActivity);
+        LunchOptionsActivity lunchOptionsActivity = (LunchOptionsActivity)getActivity();
+        packLunchButton.setOnClickListener(lunchOptionsActivity);
         return rootView;
     }
 
@@ -54,4 +54,16 @@ public class LunchOptionsFragment extends Fragment {
         return "Lunch: " + TextUtils.join(", ", options);
     }
 
+    public void enableAuthorizedOptions(Boolean enable){
+        int[] ids = {R.id.checkbox_vegetarian, R.id.checkbox_diabetic, R.id.checkbox_gluten_free};
+        View rootView = getView();
+        if(rootView != null){
+            for(int checkboxid : ids){
+                CheckBox checkBox = (CheckBox)rootView.findViewById(checkboxid);
+                        if(checkBox != null){
+                            checkBox.setEnabled(enable);
+                        }
+            }
+        }
+    }
 }

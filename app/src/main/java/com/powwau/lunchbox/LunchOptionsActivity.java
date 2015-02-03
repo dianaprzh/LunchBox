@@ -9,9 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class LunchOptionsActivity extends Activity implements View.OnClickListener {
 
+    final static Integer REQUEST_CODE = 0;
     private LunchOptionsFragment mLunchOptionsFragment;
+    Boolean mLoggedIn = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 commit();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                mLoggedIn = true;
+            }else{
+                mLoggedIn = false;
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mLunchOptionsFragment.enableAuthorizedOptions(mLoggedIn);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -42,15 +62,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Boolean handled = false;
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_login:
+                launchLogin();
+                handled = true;
+                break;
+            case R.id.action_settings:
+                handled = true;
+                break;
         }
 
-        return super.onOptionsItemSelected(item);
+        if(!handled){
+            handled = super.onOptionsItemSelected(item);
+        }
+        return handled;
     }
 
+    private void launchLogin(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
     @Override
     public void onClick(View v) {
         if (findViewById(R.id.lunchbox) != null) {
@@ -87,4 +121,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         intent.putExtra(Intent.EXTRA_TEXT, summary);
         startActivity(intent);
     }
+
+
 }

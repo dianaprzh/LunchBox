@@ -13,5 +13,9 @@
     <string name="checkbox_gluten_free">Gluten-free</string>
     <string name="button_pack_lunch">Pack Lunch</string>
     <string name="title_activity_lunch_summary">LunchSummaryActivity</string>
+    <string name="title_activity_login">Login</string>
+    <string name="edit_text_username_hint">Username</string>
+    <string name="edit_text_password_hint">Password</string>
+    <string name="button_login">Login</string>
 
 </resources>
